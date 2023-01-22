@@ -1,3 +1,0 @@
--instancier FXMLLoader
--FXMLLoader.set'Controller'
--FXMLLoader.load
