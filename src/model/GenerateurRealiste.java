@@ -2,18 +2,16 @@ package model;
 
 import java.util.Random;
 
-public class GenerateurAleatoire implements GenerateurStrategy{
+public class GenerateurRealiste implements GenerateurStrategy{
     private double bornInf;
     private double bornSup;
+    private double temperature;
 
-    public GenerateurAleatoire(double bornInf, double bornSup) {
-        this.bornInf = bornInf;
-        this.bornSup = bornSup;
-    }
-
-    public GenerateurAleatoire(){
-        this.bornInf = Double.MIN_VALUE;
-        this.bornSup = Double.MAX_VALUE;
+    public GenerateurRealiste() {
+        Random random = new Random();
+        this.bornInf = -20;
+        this.bornSup = 40;
+        this.temperature = bornInf+random.nextDouble(bornSup-bornInf);
     }
 
     public double getBornInf() {
@@ -35,8 +33,10 @@ public class GenerateurAleatoire implements GenerateurStrategy{
     @Override
     public double genereTemperature() {
         Random random = new Random();
-        double temperature;
-        temperature = bornInf+random.nextDouble(bornSup-bornInf);
-        return temperature;
+        double inf, sup;
+        inf = -2;
+        sup = 2;
+        this.temperature += inf+random.nextDouble(sup-inf);
+        return this.temperature;
     }
 }

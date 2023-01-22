@@ -1,43 +1,34 @@
 package model;
 
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 import java.util.ArrayList;
 
-public class Capteur extends Observable  implements Runnable{
-    private static int idActuel;
-    private int id;
-    private String nom;
-    private DoubleProperty temperature;
-//    private Thread thread;
+public class Capteur extends CapteurAbstrait  implements Runnable{
+    private Thread thread;
     private GenerateurStrategy strategy;
 
 
     public Capteur(String nom, GenerateurStrategy strategy) {
-        this.id = idActuel;
-        idActuel += 1;
-        this.nom = nom;
+        super(nom);
         this.temperature = new SimpleDoubleProperty(strategy.genereTemperature());
-        this.lesObservateurs = new ArrayList<>();
         this.strategy = strategy;
+        if (strategy.getClass().getSimpleName().equals("GenerateurManuel")) {
+            this.thread = null;
+        }
+        else{
+            startThread();
+        }
     }
-
-    public int getId() {
-        return id;
+    public void startThread(){
+        thread = new Thread(this);
+        thread.setDaemon(true);
+        thread.start();
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-        this.notifier();
+    public void stopThread(){
+        thread.interrupt();
     }
 
     public DoubleProperty getTemperature() {
@@ -45,7 +36,7 @@ public class Capteur extends Observable  implements Runnable{
     }
 
     public void setTemperature(double temperature) {
-        this.temperature = new SimpleDoubleProperty(temperature);
+        this.temperature.set(temperature);
         this.notifier();
     }
 
@@ -55,6 +46,16 @@ public class Capteur extends Observable  implements Runnable{
 
     public void setStrategy(GenerateurStrategy strategy) {
         this.strategy = strategy;
+        if (thread != null){
+            thread.interrupt();
+        }
+        if (strategy.getClass().getSimpleName().equals("GenerateurManuel")) {
+            this.thread = null;
+        }
+        else{
+            startThread();
+        }
+        this.notifier();
     }
 
     public void setGenerateur(GenerateurStrategy strategy){
@@ -62,6 +63,14 @@ public class Capteur extends Observable  implements Runnable{
     }
 
     @Override
-    public void run(){}
-
+    public void run(){
+        while (true) {
+            Platform.runLater(() -> setTemperature(this.strategy.genereTemperature()));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }
 }

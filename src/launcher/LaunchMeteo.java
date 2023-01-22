@@ -16,7 +16,7 @@ public class LaunchMeteo extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Title");
+        primaryStage.setTitle("Capteur JavaFX");
         primaryStage.show();
     }
 

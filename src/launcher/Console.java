@@ -5,8 +5,6 @@ import model.GenerateurAleatoire;
 import view.AfficheurTemperature;
 import view.SaisiseurTemperature;
 
-import java.util.Random;
-
 public class Console {
     public static void main(String[] args) {
         GenerateurAleatoire ga = new GenerateurAleatoire(-5,40);
