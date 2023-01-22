@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="373.0" prefWidth="277.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainWindow">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="373.0" prefWidth="314.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainWindow">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -24,7 +24,13 @@
          </GridPane.margin>
       </Button>
       <Button fx:id="btnAjouterZone" mnemonicParsing="false" onAction="#clickButtonAjouterZone" text="Ajouter CapteurZone" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-<!--      <Button fx:id="btnVoir" mnemonicParsing="false" onAction="#clickButtonVoir" disable="true" text="Voir" GridPane.rowIndex="1" />-->
-<!--      <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#clickButtonVoir"  text="Supprimer" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />-->
+      <Button fx:id="btnVoir" disable="true" mnemonicParsing="false" onAction="#clickButtonVoir" text="Voir" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets right="110.0" top="10.0" />
+         </GridPane.margin></Button>
+      <Button fx:id="btnSupprimer" disable="true" mnemonicParsing="false" onAction="#clickButtonSupprimer" text="Supprimer" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets left="140.0" top="10.0" />
+         </GridPane.margin></Button>
    </children>
 </GridPane>

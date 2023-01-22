@@ -54,18 +54,8 @@ public class MainWindow extends Visualisateur{
         });
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-//           btnVoir.setDisable(false);
-//           btnSupprimer.setDisable(false);
-            try {
-                if (lesCapteurs.get(listView.getSelectionModel().getSelectedIndex()).getClass().getSimpleName().equals("CapteurZone")) {
-                    DetailZoneWindow Dzw = new DetailZoneWindow((CapteurZone) lesCapteurs.get(listView.getSelectionModel().getSelectedIndex()));
-                }
-                else{
-                    DetailWindow Dw = new DetailWindow((Capteur) lesCapteurs.get(listView.getSelectionModel().getSelectedIndex()));
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+           btnVoir.setDisable(false);
+           btnSupprimer.setDisable(false);
         });
 
         Capteur capteur1 = new Capteur("Capteur Réaliste", new GenerateurRealiste());
@@ -91,28 +81,52 @@ public class MainWindow extends Visualisateur{
         CapteurZone c = new CapteurZone("Nouveau Capteur Zone", new ArrayList<Capteur>());
         lesCapteurs.add(c);
     }
-//    @FXML
-//    private void clickButtonSupprimer() throws Exception{
-//        CapteurAbstrait c = lesCapteurs.get(listView.getSelectionModel().getSelectedIndex());
-//        lesCapteurs.remove(c);
-//        listView.getItems().remove(c);
-//        listView.refresh();
-//    }
-//    @FXML
-//    private void clickButtonVoir() throws Exception{
-//        try {
-//            if (lesCapteurs.get(listView.getSelectionModel().getSelectedIndex()).getClass().getSimpleName().equals("CapteurZone")) {
-//                DetailZoneWindow Dzw = new DetailZoneWindow((CapteurZone) lesCapteurs.get(listView.getSelectionModel().getSelectedIndex()));
-//            }
-//            else{
-//                DetailWindow Dw = new DetailWindow((Capteur) lesCapteurs.get(listView.getSelectionModel().getSelectedIndex()));
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    @FXML
+    private void clickButtonSupprimer() throws Exception{
+        CapteurAbstrait c = lesCapteurs.get(listView.getSelectionModel().getSelectedIndex());
+        listView.getItems().remove(listView.getSelectionModel().getSelectedIndex());
+        if (lesCapteurs.size() == 0) {
+            btnVoir.setDisable(true);
+            btnSupprimer.setDisable(true);
+        }
+        update();
+    }
+    @FXML
+    private void clickButtonVoir() throws Exception{
+        try {
+            if (lesCapteurs.get(listView.getSelectionModel().getSelectedIndex()).getClass().getSimpleName().equals("CapteurZone")) {
+                DetailZoneWindow Dzw = new DetailZoneWindow((CapteurZone) lesCapteurs.get(listView.getSelectionModel().getSelectedIndex()));
+            }
+            else{
+                DetailWindow Dw = new DetailWindow((Capteur) lesCapteurs.get(listView.getSelectionModel().getSelectedIndex()));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Override
     public void update() {
-        listView.refresh();
+        lesCapteurs = listView.getItems();
+
+        listView.setCellFactory(new Callback<ListView<CapteurAbstrait>, ListCell<CapteurAbstrait>>() {
+            @Override
+            public ListCell<CapteurAbstrait> call(ListView<CapteurAbstrait> capteurListView) {
+                return new ListCell<CapteurAbstrait>(){
+                    @Override
+                    public void updateItem(CapteurAbstrait value, boolean empty) {
+                        super.updateItem(value, empty);
+                        if (value != null) {
+                            textProperty().bind(new SimpleStringProperty(this, "", "")
+                                    .concat("[")
+                                    .concat(value.getId())
+                                    .concat("] ")
+                                    .concat(value.getNom())
+                                    .concat(" : ")
+                                    .concat(value.getTemperature().asString("%.2f°C")));
+                        }
+                    }
+                };
+            }
+        });
     }
 }
